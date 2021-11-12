@@ -1,7 +1,7 @@
 # Databricks notebook source
 import test
 
-helloworld('Steve')
+test.helloworld('Steve')
 
 # COMMAND ----------
 
