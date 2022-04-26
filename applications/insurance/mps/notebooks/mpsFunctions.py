@@ -1,15 +1,9 @@
+# Databricks notebook source
 from common import common
 from pyspark.sql.functions import *
 from pyspark.sql.types import *
 import json, os, re, sys
 import xml.etree.ElementTree as ET
-
-class Udf(object):
-    def __init__(s, func, spark_type):
-        s.func, s.spark_type = func, spark_type
-
-    def __call__(s, *args):
-        return udf(s.func, s.spark_type)(*args)
 
 #sys.path.append(os.path.abspath('/Workspace/Repos/steve.castledine1@theaa.com/databricks1'))
 
@@ -53,7 +47,7 @@ def getXMLFlatModel(xmlAsString, CorrelationId, CustomerQuoteReference, QuoteTyp
           for item in child.iter():
             tag=re.sub(r'{[^()]*}', '', item.tag)
             if (tag=="Amount" or tag=="Currency") and item.text is not None:
-              jsonArray.append({parenttag+":"+tag:item.text})
+              jsonArray.append({parenttag+"_"+tag:item.text})
         else:
           # this is an data element of the parent so use
           jsonArray.append({tag:child.text})
@@ -74,11 +68,12 @@ def getXMLFlatModel(xmlAsString, CorrelationId, CustomerQuoteReference, QuoteTyp
 schema = ArrayType(StructType([
     StructField("name", ArrayType(StringType()), True)
 ]))
+extractXMLFlatModel = udf(getXMLFlatModel, schema)
 
 ##############################################################################################################
 #################Callable Functions
-def getObjectListDF(df,spark,parentNode,ctx):
-  extractXMLFlatModel = udf(getXMLFlatModel, schema)
+def getObjectListDF(df,xxspark,parentNode,ctx):
+  
   #This data frame takes the bronze data, breaks out the model we want and creates a seperate row per iteration of that model in the XML Document in json format
   #Declare model we want to retrieve in XML XPath format
   model=lit(parentNode)  

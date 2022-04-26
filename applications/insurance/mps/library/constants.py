@@ -1,0 +1,5 @@
+CONST_XPATH_SUMMARY="{*}GenerateResponse/{*}Summary"
+CONST_XPATH_FAILEDSCHEME="{*}GenerateResponse/{*}FailedSchemeList/{*}FailedScheme"
+CONST_XPATH_DECLINEDQUOTE="{*}GenerateResponse/{*}DeclinedQuoteList/{*}DeclinedQuote"
+CONST_XPATH_REFERREDSCHEME="{*}GenerateResponse/{*}ReferredSchemeList/{*}ReferredScheme"
+CONST_XPATH_QUOTEDSCHEME="{*}GenerateResponse/{*}QuotedSchemeList/{*}QuotedScheme"
